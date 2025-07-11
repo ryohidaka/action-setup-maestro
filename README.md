@@ -15,10 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: ryohidaka/action-setup-maestro@v1
+        with:
+          version: 1.41.0
 ```
 
 ## Inputs
 
-| Input | Description | Required | Default |
-| ----- | ----------- | -------- | ------- |
-| ``    |             | ✅       | ``      |
+| Input     | Description                                                          | Required | Default |
+| --------- | -------------------------------------------------------------------- | -------- | ------- |
+| `version` | Maestro version to install (e.g., 1.41.0).If empty, installs latest. |          | ``      |

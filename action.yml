@@ -9,6 +9,10 @@ branding:
   icon: send
 
 inputs:
+  version:
+    description: Maestro version to install (e.g., 1.41.0). If empty, installs latest.
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -16,6 +20,11 @@ runs:
     - name: Install Maestro CLI
       shell: bash
       run: |
+        # Determine Maestro version to install
+        if [ -n "${{ inputs.version }}" ]; then
+          export MAESTRO_VERSION="${{ inputs.version }}"
+        fi
+
         # Install Maestro CLI
         curl -Ls "https://get.maestro.mobile.dev" | bash
 
