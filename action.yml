@@ -22,7 +22,10 @@ runs:
       run: |
         # Determine Maestro version to install
         if [ -n "${{ inputs.version }}" ]; then
+          echo "::notice::Installing Maestro CLI version ${{ inputs.version }}"
           export MAESTRO_VERSION="${{ inputs.version }}"
+        else
+          echo "::notice::Installing latest Maestro CLI"
         fi
 
         # Install Maestro CLI
@@ -34,4 +37,6 @@ runs:
 
     - name: Show Maestro version
       shell: bash
-      run: maestro --version
+      run: |
+        echo "::notice::Maestro version:"
+        maestro --version
