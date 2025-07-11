@@ -13,3 +13,16 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Install Maestro CLI
+      shell: bash
+      run: |
+        # Install Maestro CLI
+        curl -Ls "https://get.maestro.mobile.dev" | bash
+
+    - name: Add Maestro to PATH
+      shell: bash
+      run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+    - name: Show Maestro version
+      shell: bash
+      run: maestro --version
