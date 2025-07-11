@@ -13,11 +13,34 @@ inputs:
     description: Maestro version to install (e.g., 1.41.0). If empty, installs latest.
     required: false
     default: ""
+  cache:
+    description: Whether to cache Maestro CLI (true/false)
+    required: false
+    default: "true"
 
 runs:
   using: "composite"
   steps:
+    - name: Restore Maestro cache
+      if: inputs.cache == 'true'
+      id: restore-maestro-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.maestro
+        key: ${{ runner.os }}-maestro-${{ inputs.version || 'latest' }}
+
+    - name: Check if Maestro CLI exists
+      id: check-maestro
+      shell: bash
+      run: |
+        if [ -x "$HOME/.maestro/bin/maestro" ]; then
+          echo "cached=true" >> $GITHUB_OUTPUT
+        else
+          echo "cached=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Install Maestro CLI
+      if: steps.check-maestro.outputs.cached == 'false'
       shell: bash
       run: |
         # Determine Maestro version to install
@@ -40,3 +63,10 @@ runs:
       run: |
         echo "::notice::Maestro version:"
         maestro --version
+
+    - name: Save Maestro cache
+      if: inputs.cache == 'true' && steps.check-maestro.outputs.cached == 'false'
+      uses: actions/cache@v4
+      with:
+        path: ~/.maestro
+        key: ${{ runner.os }}-maestro-${{ inputs.version || 'latest' }}
