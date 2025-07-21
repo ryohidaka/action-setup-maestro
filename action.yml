@@ -5,8 +5,8 @@ author: "ryohidaka"
 description: "GitHub Actions to setup Maestro CLI."
 
 branding:
-  color: green
-  icon: send
+  color: blue
+  icon: smartphone
 
 inputs:
   version:
